@@ -29,6 +29,7 @@ import ir.mirrajabi.searchdialog.core.Searchable;
 public class SimpleSearchDialogCompat<T extends Searchable> extends BaseSearchDialogCompat<T> {
     private String mTitle;
     private String mSearchHint;
+    private String mInitialSearchValue;
     private SearchResultListener<T> mSearchResultListener;
 
     private TextView mTxtTitle;
@@ -44,13 +45,22 @@ public class SimpleSearchDialogCompat<T extends Searchable> extends BaseSearchDi
                                     @Nullable Filter filter, ArrayList<T> items,
                                     SearchResultListener<T> searchResultListener) {
         super(context, items, filter, null,null);
-        init(title, searchHint, searchResultListener);
+        init(title, searchHint, null, searchResultListener);
     }
 
-    private void init(String title, String searchHint,
+    public SimpleSearchDialogCompat(Context context, String title, String searchHint,
+                                    String initialSearchValue,
+                                    @Nullable Filter filter, ArrayList<T> items,
+                                    SearchResultListener<T> searchResultListener) {
+        super(context, items, filter, null,null);
+        init(title, searchHint, initialSearchValue, searchResultListener);
+    }
+
+    private void init(String title, String searchHint, String initialSearchValue,
                       SearchResultListener<T> searchResultListener){
         mTitle = title;
         mSearchHint = searchHint;
+        mInitialSearchValue = initialSearchValue;
         mSearchResultListener = searchResultListener;
         setFilterResultListener(new FilterResultListener<T>() {
             @Override
@@ -89,7 +99,6 @@ public class SimpleSearchDialogCompat<T extends Searchable> extends BaseSearchDi
         adapter.setSearchDialog(this);
         setFilterResultListener(getFilterResultListener());
         setAdapter(adapter);
-        mSearchBox.requestFocus();
         ((BaseFilter<T>)getFilter()).setOnPerformFilterListener(new OnPerformFilterListener() {
             @Override
             public void doBeforeFiltering() {
@@ -101,6 +110,11 @@ public class SimpleSearchDialogCompat<T extends Searchable> extends BaseSearchDi
                 setLoading(false);
             }
         });
+        if(mInitialSearchValue != null) {
+            mSearchBox.setText(mInitialSearchValue);
+            getFilter().filter(mInitialSearchValue);
+        }
+        mSearchBox.requestFocus();
     }
 
     public SimpleSearchDialogCompat setTitle(String title) {
