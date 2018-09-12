@@ -7,6 +7,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class SearchDialogAdapter<T extends Searchable>
     private AdapterViewBinder<T> mViewBinder;
     private String mSearchTag;
     private boolean mHighlightPartsInCommon = true;
+    private int selectableItemBackgroundId;
 
     private BaseSearchDialogCompat mSearchDialog;
 
@@ -51,6 +53,11 @@ public class SearchDialogAdapter<T extends Searchable>
         this.mItems = items;
         this.mLayout = layout;
         this.mViewBinder = viewBinder;
+
+        final TypedValue outValue = new TypedValue();
+        mContext.getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
+                outValue, true);
+        this.selectableItemBackgroundId = outValue.resourceId;
     }
 
     public List<T> getItems() {
@@ -100,6 +107,11 @@ public class SearchDialogAdapter<T extends Searchable>
         if(mViewBinder != null)
             mViewBinder.bind(holder, object, position);
         TextView text = holder.getViewById(android.R.id.text1);
+
+        holder.itemView.setClickable(true);
+        holder.itemView.setFocusable(true);
+        holder.itemView.setBackgroundResource(this.selectableItemBackgroundId);
+
         text.setTextColor(getColor(R.color.searchDialogResultColor));
         if(mSearchTag != null && mHighlightPartsInCommon)
             text.setText(StringsHelper.highlightLCS(object.getTitle(), getSearchTag(),
