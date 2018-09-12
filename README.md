@@ -1,5 +1,5 @@
 # search-dialog
-[![](https://jitpack.io/v/mirrajabi/search-dialog.svg)](https://jitpack.io/#mirrajabi/search-dialog)
+[![](https://jitpack.io/v/majidasgari/search-dialog.svg)](https://jitpack.io/#majidasgari/search-dialog)
 
 An awesome and customizable search dialog with built-in search options.
 
