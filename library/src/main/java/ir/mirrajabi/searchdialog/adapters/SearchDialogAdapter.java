@@ -32,7 +32,6 @@ public class SearchDialogAdapter<T extends Searchable>
     private AdapterViewBinder<T> mViewBinder;
     private String mSearchTag;
     private boolean mHighlightPartsInCommon = true;
-    private int selectableItemBackgroundId;
 
     private BaseSearchDialogCompat mSearchDialog;
 
@@ -53,11 +52,6 @@ public class SearchDialogAdapter<T extends Searchable>
         this.mItems = items;
         this.mLayout = layout;
         this.mViewBinder = viewBinder;
-
-        final TypedValue outValue = new TypedValue();
-        mContext.getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
-                outValue, true);
-        this.selectableItemBackgroundId = outValue.resourceId;
     }
 
     public List<T> getItems() {
@@ -110,7 +104,7 @@ public class SearchDialogAdapter<T extends Searchable>
 
         holder.itemView.setClickable(true);
         holder.itemView.setFocusable(true);
-        holder.itemView.setBackgroundResource(this.selectableItemBackgroundId);
+        holder.itemView.setBackgroundResource(R.drawable.color_selector);
 
         text.setTextColor(getColor(R.color.searchDialogResultColor));
         if(mSearchTag != null && mHighlightPartsInCommon)
